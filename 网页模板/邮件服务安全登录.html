@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>邮件服务器登录</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 400px;
+            padding: 40px 30px;
+            transition: all 0.3s ease;
+        }
+        .login-container:hover {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo h1 {
+            color: #4a6fa5;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .logo p {
+            color: #6c8ba0;
+            font-size: 14px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+            font-size: 14px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #4a6fa5;
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+        }
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, #4a6fa5, #3a5a8c);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+        .login-button:hover {
+            background: linear-gradient(to right, #3a5a8c, #2a4570);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 111, 165, 0.4);
+        }
+        .login-button:active {
+            transform: translateY(0);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #777;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h1>MailServer</h1>
+            <p>安全的邮件服务登录</p>
+        </div>
+
+        <form action="#" method="POST">
+            <div class="input-group">
+                <label for="email">邮箱地址</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password" placeholder="请输入密码" required>
+            </div>
+
+            <!-- 修改后的登录按钮 -->
+            <button type="button" class="login-button" onclick="login()">登录</button>
+        </form>
+
+        <div class="footer">
+            <p>© 2023 邮件服务器系统 · 保留所有权利</p>
+        </div>
+    </div>
+
+    <!-- 添加登录功能的JavaScript -->
+    <script>
+        function login() {
+            // 获取表单输入值
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // 简单的前端验证
+            if (!email || !password) {
+                alert('邮箱和密码不能为空');
+                return;
+            }
+
+            // 模拟登录过程
+            console.log('登录请求:', { email, password });
+
+            // 显示加载状态
+            const button = document.querySelector('.login-button');
+            const originalText = button.textContent;
+            button.textContent = '登录中...';
+            button.disabled = true;
+
+            // 模拟API延迟
+            setTimeout(() => {
+                // 登录成功处理
+                alert('登录成功！');
+                // 重置按钮状态
+                button.textContent = originalText;
+                button.disabled = false;
+
+                // 重定向到邮箱主页
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

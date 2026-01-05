@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>办公网系统登录</title>
+    <style>
+        * {
+            outline: none !important;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #4a6fa5, #3a5a8c);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            font-family: 'Microsoft YaHei', sans-serif;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            position: relative;
+            height: 520px;
+        }
+
+        .login-header {
+            text-align: center;
+            padding: 30px 20px 20px;
+            background: white;
+            position: relative;
+            z-index: 2;
+        }
+
+        .login-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #4a6fa5;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .login-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .login-options {
+            padding: 0 20px;
+        }
+
+        .option {
+            width: 100%;
+            height: 48px;
+            background: #f0f7ff;
+            border-bottom: 1px solid #e0e6ef;
+            text-align: center;
+            line-height: 48px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #4a6fa5;
+            font-size: 16px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .option:hover {
+            background: #e6f0ff;
+            color: #3a5a8c;
+        }
+
+        .option.selected {
+            background: #e6f0ff;
+            color: #3a5a8c;
+            font-weight: 700;
+            border-bottom: 2px solid #4a6fa5;
+        }
+
+        .input-group {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            position: relative;
+            z-index: 1;
+        }
+
+        .input-wrap {
+            position: relative;
+            margin-bottom: 20px;
+            height: 58px;
+        }
+
+        /* 纯CSS固定图标（永久不消失） */
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .input-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: #4a6fa5;
+        }
+
+        .input-wrap input {
+            width: 100%;
+            height: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        .input-wrap input:focus {
+            border-color: #4a6fa5;
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+        }
+
+        .login-btn {
+            width: 100%;
+            height: 48px;
+            background: linear-gradient(to right, #4a6fa5, #3a5a8c);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(to right, #3a5a8c, #2a4a7c);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(74, 111, 165, 0.3);
+        }
+
+        .msg {
+            text-align: center;
+            padding: 15px;
+            color: #e74c3c;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body onload="document.getElementById('name').focus()" scroll="auto">
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="login-title">办公网系统</div>
+                <div class="login-subtitle">安全高效的企业办公平台</div>
+            </div>
+
+            <div class="login-options">
+                <div class="option selected">办公网登录</div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-wrap">
+                    <div class="input-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 10c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-9a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                        </svg>
+                    </div>
+                    <input type="text" id="name" name="UNAME" maxlength="20" autocomplete="off" onfocus="this.select()" value="" placeholder="用户名">
+                </div>
+
+                <div class="input-wrap">
+                    <div class="input-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                            <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a4 4 0 1 0-8 0v4a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1zM3.2 8a5.6 5.6 0 0 1 3.4-5.2 1.7 1.7 0 0 1 2.2 0A5.6 5.6 0 0 1 12.8 8H3.2z"/>
+                        </svg>
+                    </div>
+                    <input type="password" id="password" name="PASSWORD" autocomplete="new-password" maxlength="200" value="" placeholder="密码">
+                </div>
+
+                <button type="submit" class="login-btn" title="登录" onclick="login()">登录</button>
+            </div>
+
+            <div class="msg">
+                <div>欢迎访问  办公网OA系统</div>
+                <div>系统安全提示：请勿在公共设备上保存密码</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('name').focus();
+        });
+
+        window.addEventListener('resize', function() {
+            if (document.activeElement.tagName === 'INPUT') {
+                window.scrollTo(0, 0);
+            }
+        });
+    </script>
+</body>
+</html>

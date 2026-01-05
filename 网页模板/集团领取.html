@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>集团年终奖励抽取</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px 0;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, #4a6fa5, #3a5a8c);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2a5298;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #555;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .countdown {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px 25px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e6ef;
+        }
+
+        .countdown h3 {
+            font-size: 18px;
+            color: #2a5298;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .countdown-time {
+            font-size: 24px;
+            font-weight: 700;
+            color: #e74c3c;
+            letter-spacing: 1px;
+        }
+
+        .form-section {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            margin-bottom: 35px;
+        }
+
+        .form-title {
+            text-align: center;
+            font-size: 22px;
+            color: #2a5298;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 15px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #fff;
+            color: #333;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4a6fa5;
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+        }
+
+        .form-input::placeholder {
+            color: #aaa;
+        }
+
+        .reward-options {
+            background: #f0f7ff;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 25px;
+            border: 1px solid #e0e6ef;
+        }
+
+        .reward-title {
+            text-align: center;
+            font-size: 18px;
+            color: #2a5298;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .reward-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .reward-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e6ef;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .reward-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+            border-color: #4a6fa5;
+        }
+
+        .reward-card.selected {
+            border-color: #4a6fa5;
+            background: #e6f0ff;
+        }
+
+        .reward-icon {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: #4a6fa5;
+        }
+
+        .reward-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2a5298;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .reward-desc {
+            font-size: 13px;
+            color: #666;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, #4a6fa5, #3a5a8c);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(to right, #3a5a8c, #2a4a7c);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(74, 111, 165, 0.3);
+        }
+
+        .privacy-section {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 20px;
+            color: #666;
+            font-size: 13px;
+            border-top: 1px solid #eee;
+        }
+
+        .privacy-section span {
+            color: #4a6fa5;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #888;
+            font-size: 14px;
+            padding: 15px 0;
+        }
+
+        .highlight {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            .form-input {
+                padding: 12px 15px;
+            }
+
+            .countdown-time {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>集团年终奖励抽取</h1>
+            <p>感恩同行，荣耀共享！参与抽取，赢取专属年终礼遇</p>
+        </div>
+
+        <div class="countdown">
+            <h3>信息登记截止时间</h3>
+            <div class="countdown-time">00天 00时 00分 00秒</div>
+        </div>
+
+        <div class="form-section">
+            <h2 class="form-title">请填写您的个人信息</h2>
+
+            <form id="rewardForm">
+                <div class="form-group">
+                    <label for="name" class="form-label">姓名 <span class="highlight">*</span></label>
+                    <input type="text" id="name" class="form-input" placeholder="请输入您的真实姓名" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone" class="form-label">手机号码 <span class="highlight">*</span></label>
+                    <input type="tel" id="phone" class="form-input" placeholder="请输入您的手机号码" required>
+                </div>
+                 <div class="form-group">
+                    <label for="name" class="form-label">部门 <span class="highlight">*</span></label>
+                    <input type="text" id="bumen" class="form-input" placeholder="请输入您的部门" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address" class="form-label">详细地址 <span class="highlight">*</span></label>
+                    <input type="text" id="address" class="form-input" placeholder="请填写您的详细收货地址" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">电子邮箱</label>
+                    <input type="email" id="email" class="form-input" placeholder="请输入您的电子邮箱（可选）">
+                </div>
+
+                <div class="reward-options">
+                    <h3 class="reward-title">选择您的奖励类型</h3>
+                    <div class="reward-grid">
+                        <div class="reward-card" data-reward="500元京东E卡">
+                            <div class="reward-icon">💳</div>
+                            <div class="reward-name">500元京东E卡</div>
+                            <div class="reward-desc">可用于京东全品类消费，畅享购物乐趣</div>
+                        </div>
+
+                        <div class="reward-card" data-reward="戴森吹风机">
+                            <div class="reward-icon">💨</div>
+                            <div class="reward-name">戴森吹风机</div>
+                            <div class="reward-desc">高端护发神器，享受品质生活</div>
+                        </div>
+
+                        <div class="reward-card" data-reward="三亚双人度假券">
+                            <div class="reward-icon">✈️</div>
+                            <div class="reward-name">三亚双人度假券</div>
+                            <div class="reward-desc">豪华五日游，享受阳光海滩假期</div>
+                        </div>
+
+                        <div class="reward-card" data-reward="定制豪华礼盒">
+                            <div class="reward-icon">🎁</div>
+                            <div class="reward-name">定制豪华礼盒</div>
+                            <div class="reward-desc">精美包装，内含多款精选礼品</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" onclick="login()">提交信息，参与抽奖</button>
+            </form>
+        </div>
+
+        <div class="privacy-section">
+            <p>本活动经集团工会审批，所有信息仅用于奖励发放，严格遵守《个人信息保护法》</p>
+            <p>您的个人信息将受到严格保护，不会用于任何其他用途。 <span>查看隐私政策</span></p>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 模拟倒计时
+            function updateCountdown() {
+                const now = new Date();
+                const targetDate = new Date('2026-12-31T23:59:59');
+
+                const diff = targetDate - now;
+
+                if (diff <= 0) {
+                    document.querySelector('.countdown-time').textContent = '活动已结束';
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.querySelector('.countdown-time').textContent =
+                    `${days.toString().padStart(2, '0')}天 ${hours.toString().padStart(2, '0')}时 ${minutes.toString().padStart(2, '0')}分 ${seconds.toString().padStart(2, '0')}秒`;
+            }
+
+            // 初始化倒计时
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+
+            // 选择奖励类型
+            const rewardCards = document.querySelectorAll('.reward-card');
+            rewardCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    rewardCards.forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+
+                    // 模拟选择奖励
+                    const rewardName = this.getAttribute('data-reward');
+                    console.log('已选择奖励:', rewardName);
+                });
+            });
+
+            // 提交表单
+            document.getElementById('rewardForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const name = document.getElementById('name').value;
+                const phone = document.getElementById('phone').value;
+                const address = document.getElementById('address').value;
+
+                if (!name || !phone || !address) {
+                    alert('请填写完整信息');
+                    return;
+                }
+
+                // 检查是否选择了奖励
+                const selectedReward = document.querySelector('.reward-card.selected');
+                if (!selectedReward) {
+                    alert('请选择您想要的奖励');
+                    return;
+                }
+
+                alert('提交成功！您的信息已提交，等待抽奖结果通知。');
+                this.reset();
+
+                // 重置奖励选择
+                rewardCards.forEach(c => c.classList.remove('selected'));
+            });
+        });
+    </script>
+</body>
+</html>
