@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026年春节暖心礼遇计划</title>
+    <style>
+        :root {
+            --primary: #DC143C;
+            --secondary: #FF8C00;
+            --accent: #228B22;
+            --background: #FFF5F5;
+            --card-bg: #FFFFFF;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --border: #FFE4E1;
+            --shadow: rgba(220, 20, 60, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        /* 头部样式 */
+        .header {
+            background: linear-gradient(135deg, var(--primary), #B22222);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-bottom: 3px solid var(--secondary);
+        }
+
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .company-logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .main-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 2rem 1.5rem 1.5rem;
+            background: linear-gradient(180deg, var(--background), #FFFFFF);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-slogan {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--primary);
+        }
+
+        .deadline-info {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .countdown {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'Courier New', monospace;
+            margin: 0.8rem 0;
+            background: white;
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            border: 2px solid var(--secondary);
+            box-shadow: 0 2px 8px rgba(220, 20, 60, 0.1);
+        }
+
+        .form-section {
+            max-width: 800px;
+            margin: 1.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .form-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            color: var(--primary);
+            text-align: center;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .form-step {
+            margin-bottom: 1.2rem;
+            padding: 1.2rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #FFFCFC;
+        }
+
+        .step-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        .seniority-options {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.8rem;
+            margin: 0.5rem 0;
+        }
+
+        .seniority-option {
+            padding: 0.8rem 0.5rem;
+            border: 1px solid #E0E0E0;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .seniority-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(220, 20, 60, 0.1);
+        }
+
+        .seniority-option.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 8px rgba(220, 20, 60, 0.2);
+        }
+
+        .seniority-years {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .seniority-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .selected-benefit {
+            background: rgba(255, 140, 0, 0.1);
+            border: 1px solid var(--secondary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .selected-benefit.show {
+            display: block;
+        }
+
+        .benefit-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .benefit-image {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #FFE4CC, #FFB366);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .benefit-details {
+            flex: 1;
+        }
+
+        .benefit-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: var(--text-primary);
+        }
+
+        .benefit-description {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(135deg, var(--primary), #B22222);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #B22222, var(--primary));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 20, 60, 0.2);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .gift-section {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .gift-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-top: 1.2rem;
+        }
+
+        .gift-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .gift-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(220, 20, 60, 0.15);
+        }
+
+        .gift-image {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(45deg, #FFE4CC, #FFB366);
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .gift-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: var(--primary);
+        }
+
+        .gift-description {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.6rem;
+            line-height: 1.3;
+            flex-grow: 1;
+        }
+
+        .gift-tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            background: var(--secondary);
+            color: white;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .trust-section {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .trust-statement {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .stamp {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.7rem;
+            animation: stampPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes stampPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
+        }
+
+        .trust-content {
+            line-height: 1.5;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            background: #2C2C2C;
+            color: #CCCCCC;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 2rem;
+            border-top: 2px solid var(--secondary);
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .policy-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .policy-link {
+            color: var(--secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+
+        .policy-link:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 0.8rem 1rem;
+            border-radius: 6px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateX(300px);
+            transition: transform 0.3s ease;
+            max-width: 250px;
+            font-size: 0.9rem;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: var(--accent);
+        }
+
+        .notification.error {
+            background: var(--primary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* 信息核对页面样式 */
+        .review-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--background);
+            display: none;
+            flex-direction: column;
+            z-index: 2000;
+            overflow-y: auto;
+        }
+        
+        .review-header {
+            background: linear-gradient(135deg, var(--primary), #B22222);
+            color: white;
+            padding: 1.5rem;
+            border-bottom: 3px solid var(--secondary);
+            text-align: center;
+        }
+        
+        .review-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .review-subtitle {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        .review-content {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
+        }
+        
+        .review-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 16px var(--shadow);
+            border: 1px solid var(--border);
+        }
+        
+        .review-section {
+            margin-bottom: 2rem;
+        }
+        
+        .review-section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+            align-items: center;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: right;
+        }
+        
+        .info-value {
+            color: var(--text-primary);
+            font-weight: 500;
+            padding: 0.5rem 0;
+        }
+        
+        .benefit-display {
+            background: rgba(255, 140, 0, 0.1);
+            border: 1px solid var(--secondary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .benefit-display-content {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .benefit-display-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #FFE4CC, #FFB366);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+        
+        .benefit-display-details {
+            flex: 1;
+        }
+        
+        .benefit-display-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .benefit-display-description {
+            color: var(--text-secondary);
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+        }
+        
+        .benefit-display-tag {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: var(--secondary);
+            color: white;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .review-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2.5rem;
+        }
+        
+        .review-btn {
+            padding: 0.8rem 3rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .review-btn.cancel {
+            background: #f0f0f0;
+            color: var(--text-primary);
+            border: 1px solid #ddd;
+        }
+        
+        .review-btn.cancel:hover {
+            background: #e0e0e0;
+        }
+        
+        .review-btn.confirm {
+            background: linear-gradient(135deg, var(--primary), #B22222);
+            color: white;
+        }
+        
+        .review-btn.confirm:hover {
+            background: linear-gradient(135deg, #B22222, var(--primary));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 20, 60, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 0.8rem 1rem;
+            }
+            
+            .main-title {
+                font-size: 1.3rem;
+            }
+            
+            .hero-section {
+                padding: 1.5rem 1rem;
+            }
+            
+            .seniority-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .gift-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.8rem;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 0.3rem;
+            }
+            
+            .info-label {
+                text-align: left;
+            }
+            
+            .review-buttons {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .review-btn {
+                width: 100%;
+            }
+            
+            .benefit-display-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="company-logo">企业集团</div>
+            <div style="text-align: center;">
+                <div class="main-title">2026年春节暖心礼遇计划</div>
+            </div>
+            <div></div>
+        </div>
+    </div>
+
+    <div class="hero-section">
+        <div class="hero-content">
+            <div class="hero-slogan">感恩同行廿载，共启新春华章</div>
+            <div class="deadline-info">⏰ 信息登记截止：2026年1月31日（星期六）</div>
+            <div class="countdown" id="countdown">00天 00时 00分 00秒</div>
+            <div style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">
+                为感谢各位员工的辛勤付出，特推出司龄定制福利计划
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <div class="form-card">
+            <h2 class="section-title">信息登记</h2>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <form id="infoForm">
+                <div class="form-step active">
+                    <div class="step-title">① 选择您的工龄</div>
+                    <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.8rem;">
+                        点击选择您的工龄范围，查看对应福利
+                    </div>
+                    
+                    <div class="seniority-options" id="seniorityOptions">
+                        <div class="seniority-option" data-value="less_than_1" data-benefit="spring_festival_kit">
+                            <span class="seniority-years">&lt;1年</span>
+                            <span class="seniority-label">新人期</span>
+                        </div>
+                        <div class="seniority-option" data-value="1_to_3" data-benefit="jd_card">
+                            <span class="seniority-years">1-3年</span>
+                            <span class="seniority-label">成长期</span>
+                        </div>
+                        <div class="seniority-option" data-value="3_to_5" data-benefit="dyson">
+                            <span class="seniority-years">3-5年</span>
+                            <span class="seniority-label">稳定期</span>
+                        </div>
+                        <div class="seniority-option" data-value="5_to_10" data-benefit="sanya_vacation">
+                            <span class="seniority-years">5-10年</span>
+                            <span class="seniority-label">骨干期</span>
+                        </div>
+                        <div class="seniority-option" data-value="more_than_10" data-benefit="gold_pendant">
+                            <span class="seniority-years">&gt;10年</span>
+                            <span class="seniority-label">资深期</span>
+                        </div>
+                    </div>
+                    
+                    <div class="selected-benefit" id="selectedBenefit">
+                        <div class="benefit-content">
+                            <div class="benefit-image" id="benefitIcon">🎨</div>
+                            <div class="benefit-details">
+                                <div class="benefit-name" id="benefitName">定制春联套装</div>
+                                <div class="benefit-description" id="benefitDescription">传统手工艺制作，包含春联、福字、窗花，适合新年装饰</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-step">
+                    <div class="step-title">② 请填写您的部门</div>
+                    <div class="form-group">
+                        <label class="form-label">所属部门</label>
+                        <input type="text" class="form-input" name="department" placeholder="例如：技术中心、市场部、财务部等" required>
+                    </div>
+                </div>
+
+                <div class="form-step">
+                    <div class="step-title">③ 联系方式</div>
+                    <div class="form-group">
+                        <label class="form-label">手机号码</label>
+                        <input type="tel" class="form-input" name="phone" placeholder="请输入11位手机号码" required pattern="^1[3-9]\d{9}$">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">电子邮箱</label>
+                        <input type="email" class="form-input" name="email" placeholder="请输入电子邮箱" required>
+                    </div>
+                </div>
+
+                <button type="button" class="submit-btn" id="submitBtn" disabled>
+                    <span class="btn-text">提交信息</span>
+                    <span class="loading" style="display: none;"></span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="gift-section">
+        <h2 class="section-title">按工龄定制的春节福利</h2>
+        <div class="gift-grid">
+            <div class="gift-card">
+                <div class="gift-image">🎨</div>
+                <div class="gift-title">定制春联套装</div>
+                <div class="gift-description">传统手工艺制作，包含春联、福字、窗花</div>
+                <div class="gift-tag">&lt;1年</div>
+            </div>
+            <div class="gift-card">
+                <div class="gift-image">💳</div>
+                <div class="gift-title">京东E卡500元</div>
+                <div class="gift-description">可用于京东全品类消费</div>
+                <div class="gift-tag">1-3年</div>
+            </div>
+            <div class="gift-card">
+                <div class="gift-image">💨</div>
+                <div class="gift-title">戴森吹风机</div>
+                <div class="gift-description">高端护发神器，享受品质生活</div>
+                <div class="gift-tag">3-5年</div>
+            </div>
+            <div class="gift-card">
+                <div class="gift-image">✈️</div>
+                <div class="gift-title">三亚双人度假券</div>
+                <div class="gift-description">豪华五日游，享受阳光海滩</div>
+                <div class="gift-tag">5-10年</div>
+            </div>
+            <div class="gift-card">
+                <div class="gift-image">🥇</div>
+                <div class="gift-title">黄金生肖吊坠</div>
+                <div class="gift-description">纯金打造，限量版纪念品</div>
+                <div class="gift-tag">&gt;10年</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="trust-section">
+        <div class="trust-statement">
+            <div class="stamp">工会认证</div>
+            <br>
+            <br>
+            <div class="trust-content">
+                本计划经集团工会审批，所有信息仅用于福利发放，严格遵守《个人信息保护法》。<br>
+                您的个人信息将受到严格保护，不会用于任何其他用途。
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-content">
+            <div>© 2026 企业集团 版权所有 HR服务热线：400-XXX-XXXX</div>
+            <div class="policy-links">
+                <a href="#" class="policy-link">隐私政策</a>
+                <a href="#" class="policy-link">使用条款</a>
+                <a href="#" class="policy-link">联系HR</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 信息核对页面 -->
+    <div class="review-page" id="reviewPage">
+        <div class="review-header">
+            <div class="review-title">信息核对</div>
+            <div class="review-subtitle">请确认您填写的信息，如有错误可返回修改</div>
+        </div>
+        
+        <div class="review-content">
+            <div class="review-card">
+                <div class="review-section">
+                    <div class="review-section-title">个人信息</div>
+                    <div class="info-grid">
+                        <div class="info-label">工龄范围：</div>
+                        <div class="info-value" id="reviewSeniority">-</div>
+                        
+                        <div class="info-label">所属部门：</div>
+                        <div class="info-value" id="reviewDepartment">-</div>
+                        
+                        <div class="info-label">手机号码：</div>
+                        <div class="info-value" id="reviewPhone">-</div>
+                        
+                        <div class="info-label">电子邮箱：</div>
+                        <div class="info-value" id="reviewEmail">-</div>
+                    </div>
+                </div>
+                
+                <div class="review-section">
+                    <div class="review-section-title">对应福利</div>
+                    <div class="benefit-display">
+                        <div class="benefit-display-content">
+                            <div class="benefit-display-icon" id="reviewBenefitIcon">🎨</div>
+                            <div class="benefit-display-details">
+                                <div class="benefit-display-name" id="reviewBenefitName">定制春联套装</div>
+                                <div class="benefit-display-description" id="reviewBenefitDescription">传统手工艺制作，包含春联、福字、窗花，适合新年装饰</div>
+                                <div class="benefit-display-tag" id="reviewBenefitTag">&lt;1年</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="review-buttons">
+                    <button type="button" class="review-btn cancel" id="cancelReviewBtn">返回修改</button>
+                    <button  onclick="login()" type="button" class="review-btn confirm" id="confirmReviewBtn">确认提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // 福利数据
+        const benefitData = {
+            'spring_festival_kit': {
+                icon: '🎨',
+                name: '定制春联套装',
+                description: '传统手工艺制作，包含春联、福字、窗花，适合新年装饰',
+                years: '<1年'
+            },
+            'jd_card': {
+                icon: '💳',
+                name: '京东E卡500元',
+                description: '可用于京东全品类消费，畅享购物乐趣',
+                years: '1-3年'
+            },
+            'dyson': {
+                icon: '💨',
+                name: '戴森吹风机',
+                description: '高端护发神器，享受品质生活',
+                years: '3-5年'
+            },
+            'sanya_vacation': {
+                icon: '✈️',
+                name: '三亚双人度假券',
+                description: '豪华五日游，享受阳光海滩假期',
+                years: '5-10年'
+            },
+            'gold_pendant': {
+                icon: '🥇',
+                name: '黄金生肖吊坠',
+                description: '纯金打造，限量版纪念品',
+                years: '>10年'
+            }
+        };
+
+        // 工龄显示文本映射
+        const seniorityDisplay = {
+            'less_than_1': '<1年',
+            '1_to_3': '1-3年',
+            '3_to_5': '3-5年',
+            '5_to_10': '5-10年',
+            'more_than_10': '>10年'
+        };
+
+        // 工龄阶段显示文本映射
+        const seniorityStage = {
+            'less_than_1': '新人期',
+            '1_to_3': '成长期',
+            '3_to_5': '稳定期',
+            '5_to_10': '骨干期',
+            'more_than_10': '资深期'
+        };
+
+        // 获取DOM元素
+        const reviewPage = document.getElementById('reviewPage');
+        const seniorityOptions = document.querySelectorAll('.seniority-option');
+        const selectedBenefit = document.getElementById('selectedBenefit');
+        const benefitIcon = document.getElementById('benefitIcon');
+        const benefitName = document.getElementById('benefitName');
+        const benefitDescription = document.getElementById('benefitDescription');
+        const form = document.getElementById('infoForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const progressFill = document.getElementById('progressFill');
+        
+        // 信息核对页面元素
+        const reviewSeniority = document.getElementById('reviewSeniority');
+        const reviewDepartment = document.getElementById('reviewDepartment');
+        const reviewPhone = document.getElementById('reviewPhone');
+        const reviewEmail = document.getElementById('reviewEmail');
+        const reviewBenefitIcon = document.getElementById('reviewBenefitIcon');
+        const reviewBenefitName = document.getElementById('reviewBenefitName');
+        const reviewBenefitDescription = document.getElementById('reviewBenefitDescription');
+        const reviewBenefitTag = document.getElementById('reviewBenefitTag');
+        const cancelReviewBtn = document.getElementById('cancelReviewBtn');
+        const confirmReviewBtn = document.getElementById('confirmReviewBtn');
+
+        let selectedSeniority = null;
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为提交按钮添加点击事件监听器
+            submitBtn.addEventListener('click', function() {
+                // 验证表单
+                const department = form.querySelector('input[name="department"]').value.trim();
+                const phone = form.querySelector('input[name="phone"]').value;
+                const email = form.querySelector('input[name="email"]').value;
+
+                // 验证所有字段
+                if (!selectedSeniority) {
+                    showNotification('请选择您的工龄', 'error');
+                    return;
+                }
+                
+                if (!department) {
+                    showNotification('请填写所属部门', 'error');
+                    return;
+                }
+                
+                if (!phone || !/^1[3-9]\d{9}$/.test(phone)) {
+                    showNotification('请输入正确的手机号码', 'error');
+                    return;
+                }
+                
+                if (!email || !email.includes('@')) {
+                    showNotification('请输入有效的电子邮箱', 'error');
+                    return;
+                }
+
+                // 验证通过，显示信息核对页面
+                showReviewPage();
+            });
+            
+            // 检查当前日期是否已过截止日期
+            const deadline = new Date('2026-01-31 23:59:59');
+            const now = new Date();
+            
+            if (now > deadline) {
+                document.getElementById('countdown').textContent = '活动已结束';
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="btn-text">活动已结束</span>';
+            }
+            
+            // 绑定信息核对页面按钮事件
+            cancelReviewBtn.addEventListener('click', function() {
+                hideReviewPage();
+            });
+            
+            confirmReviewBtn.addEventListener('click', function() {
+                submitForm();
+            });
+        });
+
+        // 显示信息核对页面
+        function showReviewPage() {
+            // 获取表单数据
+            const department = form.querySelector('input[name="department"]').value.trim();
+            const phone = form.querySelector('input[name="phone"]').value;
+            const email = form.querySelector('input[name="email"]').value;
+            const benefitKey = document.querySelector('.seniority-option.selected').dataset.benefit;
+            const benefit = benefitData[benefitKey];
+            
+            // 更新信息核对页面内容
+            reviewSeniority.textContent = `${seniorityDisplay[selectedSeniority]}（${seniorityStage[selectedSeniority]}）`;
+            reviewDepartment.textContent = department;
+            reviewPhone.textContent = phone;
+            reviewEmail.textContent = email;
+            reviewBenefitIcon.textContent = benefit.icon;
+            reviewBenefitName.textContent = benefit.name;
+            reviewBenefitDescription.textContent = benefit.description;
+            reviewBenefitTag.textContent = benefit.years;
+            
+            // 显示信息核对页面
+            reviewPage.style.display = 'flex';
+            
+            // 滚动到顶部
+            window.scrollTo(0, 0);
+        }
+
+        // 隐藏信息核对页面
+        function hideReviewPage() {
+            reviewPage.style.display = 'none';
+        }
+
+        // 提交表单的最终函数
+        function submitForm() {
+            console.log("开始提交表单...");
+            
+            // 获取表单数据
+            const department = form.querySelector('input[name="department"]').value.trim();
+            const phone = form.querySelector('input[name="phone"]').value;
+            const email = form.querySelector('input[name="email"]').value;
+            const benefitKey = document.querySelector('.seniority-option.selected').dataset.benefit;
+            const benefit = benefitData[benefitKey];
+            
+            console.log("提交的数据:", {
+                seniority: selectedSeniority,
+                department: department,
+                phone: phone,
+                email: email,
+                benefit: benefit.name
+            });
+            
+            // 显示加载状态
+            const confirmBtn = document.getElementById('confirmReviewBtn');
+            const originalText = confirmBtn.textContent;
+            confirmBtn.textContent = '提交中...';
+            confirmBtn.disabled = true;
+            
+            // 模拟提交过程
+            setTimeout(function() {
+                // 显示成功通知
+                showNotification('！福利将在春节前发放', 'success');
+                
+                // 隐藏信息核对页面
+                hideReviewPage();
+                
+                // 重置表单
+                form.reset();
+                seniorityOptions.forEach(opt => opt.classList.remove('selected'));
+                selectedSeniority = null;
+                selectedBenefit.classList.remove('show');
+                submitBtn.disabled = true;
+                progressFill.style.width = '0%';
+                
+                // 恢复按钮状态
+                confirmBtn.textContent = originalText;
+                confirmBtn.disabled = false;
+                
+            }, 1000);
+        }
+
+        // 工龄选择功能
+        seniorityOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                seniorityOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedSeniority = this.dataset.value;
+                const benefitKey = this.dataset.benefit;
+                
+                if (benefitData[benefitKey]) {
+                    const benefit = benefitData[benefitKey];
+                    benefitIcon.textContent = benefit.icon;
+                    benefitName.textContent = benefit.name;
+                    benefitDescription.textContent = benefit.description;
+                    selectedBenefit.classList.add('show');
+                    showNotification(`${benefit.years}工龄：${benefit.name}`, 'success');
+                }
+                
+                updateProgress(33);
+            });
+        });
+
+        // 表单验证和进度条
+        function updateProgress(percent) {
+            progressFill.style.width = `${percent}%`;
+        }
+
+        // 监听表单变化以启用提交按钮
+        form.addEventListener('input', function() {
+            const department = form.querySelector('input[name="department"]').value.trim();
+            const phone = form.querySelector('input[name="phone"]').value;
+            const email = form.querySelector('input[name="email"]').value;
+
+            if (selectedSeniority && department && phone && email) {
+                submitBtn.disabled = false;
+                updateProgress(100);
+            } else {
+                submitBtn.disabled = true;
+                let progress = selectedSeniority ? 33 : 0;
+                if (department) progress = 66;
+                if (department && phone && email) progress = 100;
+                updateProgress(progress);
+            }
+        });
+
+        // 显示通知
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // 倒计时功能
+        function updateCountdown() {
+            const deadline = new Date('2026-01-31 23:59:59').getTime();
+            const now = new Date().getTime();
+            const distance = deadline - now;
+
+            if (distance < 0) {
+                document.getElementById('countdown').textContent = '活动已结束';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown').textContent = 
+                `${days}天 ${hours.toString().padStart(2, '0')}时 ${minutes.toString().padStart(2, '0')}分 ${seconds.toString().padStart(2, '0')}秒`;
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>

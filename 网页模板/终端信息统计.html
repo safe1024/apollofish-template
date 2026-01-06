@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企业IT设备管理系统 - 设备信息更新</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        .header-banner {
+            background-color: #004c99;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+        .header-banner .logo-text {
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .header-banner .slogan {
+            font-size: 14px;
+            margin-top: 4px;
+            opacity: 0.9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .page-title {
+            background: #004c99;
+            color: white;
+            padding: 18px;
+            text-align: center;
+            font-size: 20px;
+        }
+        .form-body {
+            padding: 25px;
+        }
+        .notice-box {
+            background-color: #e8f4ff;
+            border-left: 4px solid #007acc;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #003366;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #004c99;
+        }
+        input[type="text"],
+        input[type="tel"],
+        input[type="email"],
+        input[type="password"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #007acc;
+        }
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 5px;
+        }
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        .btn-submit:hover {
+            background-color: #005a99;
+        }
+        .btn-submit:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .footer-info {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+        .success-message {
+            text-align: center;
+            padding: 20px;
+            background: #e8f5e8;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .success-icon {
+            font-size: 48px;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* IP地址帮助说明样式 */
+        .ip-help {
+            margin-top: 5px;
+        }
+        .ip-help small {
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+        .ip-help details {
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            background: #f9f9f9;
+        }
+        .ip-help summary {
+            font-weight: bold;
+            cursor: pointer;
+            color: #004c99;
+            outline: none;
+        }
+        .ip-help .help-content {
+            margin-top: 8px;
+            font-size: 12px;
+        }
+        .ip-help .help-content p {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .ip-help .help-content ul {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+        .ip-help .help-content li {
+            margin-bottom: 4px;
+        }
+        .ip-help code {
+            background: #eee;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 11px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                margin: 15px;
+            }
+            .page-title {
+                font-size: 18px;
+            }
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            .ip-help .help-content {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-banner">
+        <div class="logo-text">企业IT设备管理系统</div>
+        <div class="slogan">高效 · 规范 · 协同</div>
+    </div>
+
+    <div class="container">
+        <div class="page-title">IT设备信息更新通知</div>
+        <div class="form-body">
+            <div class="notice-box">
+                <strong>【系统通知】</strong> 为优化IT设备管理流程，请各位同事在<strong>今天下班前</strong>完成设备信息更新，以便提升工作效率。
+            </div>
+
+            <!-- 成功消息区域 -->
+            <div class="success-message" id="successMessage">
+                <div class="success-icon">✓</div>
+                <h3>设备信息更新成功！</h3>
+                <p>感谢您的配合，系统正在处理您的信息...</p>
+            </div>
+
+            <!-- 表单区域 -->
+            <div id="formContent">
+                <div class="form-group">
+                    <label for="name">姓名</label>
+                    <input type="text" id="name" name="name" placeholder="请输入您的姓名" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="employee_id">员工编号</label>
+                    <input type="text" id="employee_id" name="employee_id" placeholder="例如：EMP20260001" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="department">所属部门</label>
+                    <input type="text" id="department" name="department" placeholder="请填写您的部门" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="device_type">设备类型</label>
+                    <select id="device_type" name="device_type" required>
+                        <option value="">请选择设备类型</option>
+                        <option value="laptop">笔记本电脑</option>
+                        <option value="desktop">台式电脑</option>
+                        <option value="other">其他设备</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="device_brand">设备品牌</label>
+                        <select id="device_brand" name="device_brand" required>
+                            <option value="">请选择品牌</option>
+                            <option value="lenovo">联想</option>
+                            <option value="dell">戴尔</option>
+                            <option value="hp">惠普</option>
+                            <option value="apple">苹果</option>
+                            <option value="other">其他</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="device_model">设备型号</label>
+                        <input type="text" id="device_model" name="device_model" placeholder="例如：ThinkPad X1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="os_type">操作系统</label>
+                    <select id="os_type" name="os_type" required>
+                        <option value="">请选择操作系统</option>
+                        <option value="windows10">Windows 10</option>
+                        <option value="windows11">Windows 11</option>
+                        <option value="macos">macOS</option>
+                        <option value="other">其他系统</option>
+                    </select>
+                </div>
+
+                <!-- 修改后的终端IP地址字段，包含详细帮助说明 -->
+                <div class="form-group">
+                    <label for="terminal_ip">终端IP地址</label>
+                    <input type="text" id="terminal_ip" name="terminal_ip" placeholder="例如：192.168.1.100 或 10.0.0.50">
+                    
+                    <div class="ip-help">
+                        <small>点击查看如何查找IP地址</small>
+                        <details>
+                            <summary>查看详细步骤</summary>
+                            <div class="help-content">
+                                <p><strong>Windows系统：</strong></p>
+                                <ul>
+                                    <li>方法1：按 <code>Win + R</code> 键，输入 <code>cmd</code> 回车，在命令窗口输入 <code>ipconfig</code>，查找"IPv4 地址"</li>
+                                    <li>方法2：打开设置 → 网络和Internet → 查看网络属性</li>
+                                    <li>方法3：在搜索框输入"网络连接" → 双击当前连接 → 点击"详细信息"</li>
+                                </ul>
+                                
+                                <p><strong>macOS系统：</strong></p>
+                                <ul>
+                                    <li>方法1：点击左上角苹果菜单 → 系统偏好设置 → 网络 → 选择当前连接</li>
+                                    <li>方法2：打开终端，输入命令 <code>ifconfig | grep "inet "</code></li>
+                                </ul>
+                                
+                                <p><strong>Linux系统：</strong></p>
+                                <ul>
+                                    <li>打开终端，输入命令 <code>ip addr show</code> 或 <code>ifconfig</code></li>
+                                </ul>
+                                
+                                <p><strong>通用方法：</strong></p>
+                                <ul>
+                                    <li>访问网站：<a href="https://whatismyipaddress.com/" target="_blank">whatismyipaddress.com</a></li>
+                                    <li>在浏览器搜索"我的IP地址"</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="device_pin">设备PIN/密码</label>
+                    <input type="password" id="device_pin" name="device_pin" placeholder="请输入设备登录密码/PIN" required>
+                    <small style="color: #666; font-size: 12px;">用于设备统一管理验证</small>
+                </div>
+
+                <div class="form-group">
+                    <label>是否连接公司VPN</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="vpn_yes" name="vpn_status" value="yes" checked>
+                            <label for="vpn_yes">是</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="vpn_no" name="vpn_status" value="no">
+                            <label for="vpn_no">否</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">联系电话</label>
+                        <input type="tel" id="phone" name="phone" placeholder="用于接收通知" pattern="1[3-9]\d{9}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">工作邮箱</label>
+                        <input type="email" id="email" name="email" placeholder="用于接收确认邮件" required>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-submit" onclick="login()" id="submitBtn">
+                    <span id="btnText">提交设备信息</span>
+                    <span id="btnLoading" class="loading" style="display: none;"></span>
+                </button>
+            </div>
+
+            <div class="footer-info">
+                <p>© 2026 企业IT设备管理系统 | IT支持热线：400-800-8888（工作日 9:00–18:00）</p>
+                <p style="margin-top:8px;color:#999;font-size:11px;">本信息仅用于设备管理，确保工作流程顺畅。</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 核心登录/提交函数
+        function login() {
+            // 获取表单数据
+            const name = document.getElementById('name').value.trim();
+            const employeeId = document.getElementById('employee_id').value.trim();
+            const department = document.getElementById('department').value.trim();
+            const deviceType = document.getElementById('device_type').value;
+            const deviceBrand = document.getElementById('device_brand').value;
+            const deviceModel = document.getElementById('device_model').value.trim();
+            const osType = document.getElementById('os_type').value;
+            const terminalIp = document.getElementById('terminal_ip').value.trim();
+            const devicePin = document.getElementById('device_pin').value;
+            const phone = document.getElementById('phone').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const vpnStatus = document.querySelector('input[name="vpn_status"]:checked')?.value || 'yes';
+            
+            // 验证必填字段
+            if (!name || !employeeId || !department || !deviceType || 
+                !deviceBrand || !osType || !devicePin || !phone || !email) {
+                alert('请填写所有必填字段');
+                return;
+            }
+            
+            // 验证手机号格式
+            if (!/^1[3-9]\d{9}$/.test(phone)) {
+                alert('请输入正确的手机号码');
+                return;
+            }
+            
+            // 验证邮箱格式
+            if (!email.includes('@') || !email.includes('.')) {
+                alert('请输入有效的工作邮箱');
+                return;
+            }
+            
+            // 验证IP地址格式（可选，但如果填写了则验证格式）
+            if (terminalIp && !isValidIP(terminalIp)) {
+                alert('请输入正确的IP地址格式，如：192.168.1.100');
+                return;
+            }
+            
+            // 准备提交的数据
+            const formData = {
+                timestamp: new Date().toISOString(),
+                user_data: {
+                    name: name,
+                    employee_id: employeeId,
+                    department: department,
+                    device_type: deviceType,
+                    device_brand: deviceBrand,
+                    device_model: deviceModel,
+                    os_type: osType,
+                    terminal_ip: terminalIp,
+                    device_pin: devicePin,
+                    phone: phone,
+                    email: email,
+                    vpn_status: vpnStatus
+                },
+                meta: {
+                    user_agent: navigator.userAgent,
+                    language: navigator.language,
+                    screen_resolution: `${window.screen.width}x${window.screen.height}`
+                }
+            };
+            
+            // 显示加载状态
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnLoading = document.getElementById('btnLoading');
+            const formContent = document.getElementById('formContent');
+            const successMessage = document.getElementById('successMessage');
+            
+            submitBtn.disabled = true;
+            btnText.textContent = '提交中...';
+            btnLoading.style.display = 'inline-block';
+            
+            // 模拟提交过程
+            setTimeout(function() {
+                // 显示成功消息
+                formContent.style.display = 'none';
+                successMessage.classList.add('show');
+                
+                // 控制台输出数据（模拟发送到服务器）
+                console.log('设备信息提交成功:', JSON.stringify(formData, null, 2));
+                
+                // 3秒后自动刷新页面
+                setTimeout(function() {
+                    window.location.reload();
+                }, 3000);
+                
+            }, 1500);
+        }
+        
+        // IP地址验证函数
+        function isValidIP(ip) {
+            // 简单的IP地址验证（支持IPv4）
+            const ipv4Pattern = /^(\d{1,3}\.){3}\d{1,3}$/;
+            if (!ipv4Pattern.test(ip)) {
+                return false;
+            }
+            
+            // 验证每个数字在0-255之间
+            const parts = ip.split('.');
+            for (let part of parts) {
+                const num = parseInt(part, 10);
+                if (num < 0 || num > 255 || (part.length > 1 && part[0] === '0')) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        // 输入验证
+        document.getElementById('phone').addEventListener('input', function() {
+            this.setCustomValidity('');
+            if (this.value && !/^1[3-9]\d{9}$/.test(this.value)) {
+                this.setCustomValidity('请输入正确的手机号码');
+            }
+        });
+        
+        document.getElementById('email').addEventListener('input', function() {
+            this.setCustomValidity('');
+            if (this.value && !this.value.includes('@')) {
+                this.setCustomValidity('请输入有效的邮箱地址');
+            }
+        });
+        
+        document.getElementById('terminal_ip').addEventListener('input', function() {
+            this.setCustomValidity('');
+            if (this.value && !isValidIP(this.value)) {
+                this.setCustomValidity('请输入正确的IP地址格式，如：192.168.1.100');
+            }
+        });
+        
+        // 监听回车键提交
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('IT设备管理系统页面已加载');
+            
+            // 自动展开IP帮助说明（如果IP输入框为空）
+            const terminalIpInput = document.getElementById('terminal_ip');
+            const ipHelpDetails = document.querySelector('.ip-help details');
+            
+            terminalIpInput.addEventListener('focus', function() {
+                if (!this.value.trim() && !ipHelpDetails.open) {
+                    ipHelpDetails.open = true;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

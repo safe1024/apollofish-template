@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026年度员工福利领取系统 - 智慧企业平台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray: #6b7280;
+            --light: #f9fafb;
+            --dark: #1f2937;
+            --card-shadow: 0 6px 20px rgba(37, 99, 235, 0.15);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e0e6ff 100%);
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            color: var(--dark);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(120deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1.5rem 0;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        /* 修改礼品网格容器为垂直滑动布局 */
+        .gift-grid-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            height: 620px; /* 增加高度以适应更大的图片 */
+        }
+
+        .gift-scroll-wrapper {
+            position: relative;
+            height: 100%;
+            padding: 0 10px;
+        }
+
+        .gift-scroll-container {
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) #e2e8f0;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            height: 100%;
+            padding-right: 5px;
+        }
+
+        .gift-scroll-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .gift-scroll-container::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+
+        .gift-scroll-container::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        /* 3x3网格布局 - 始终显示3列 */
+        .gift-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding-bottom: 10px;
+        }
+
+        .scroll-btn {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 40px;
+            border-radius: 25px;
+            background: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--primary);
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-btn:hover {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .scroll-btn-up {
+            top: 5px;
+        }
+
+        .scroll-btn-down {
+            bottom: 5px;
+        }
+
+        /* 修改卡片样式以适应自适应图片 */
+        .gift-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            height: 320px; /* 增加高度以适应自适应图片 */
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            border: none;
+            background: white;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gift-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.15);
+        }
+
+        .gift-card.selected {
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .gift-card.selected::after {
+            content: "✓";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        /* 关键修改：图片容器 - 使用padding-top技术保持宽高比 */
+        .gift-img-container {
+            position: relative;
+            width: 100%;
+            height: 200px; /* 固定高度，宽度自适应 */
+            overflow: hidden;
+            background-color: #f8fafc; /* 添加背景色 */
+        }
+
+        /* 关键修改：自适应图片样式 */
+        .gift-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* 改为contain以显示完整图片 */
+            object-position: center;
+            background-color: white;
+            padding: 5px; /* 添加内边距 */
+        }
+
+        .gift-content {
+            padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .gift-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: var(--dark);
+            line-height: 1.3;
+            height: 40px; /* 固定标题高度 */
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* 限制为2行 */
+            -webkit-box-orient: vertical;
+        }
+
+        .gift-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 5px;
+        }
+
+        .gift-stock {
+            font-size: 0.8rem;
+            color: var(--success);
+            margin-top: 3px;
+        }
+
+        .amount-display {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .amount-title {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .amount-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .progress-container {
+            margin-top: 1.5rem;
+        }
+
+        .progress-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+            background: #e2e8f0;
+        }
+
+        .progress-bar {
+            border-radius: 5px;
+            background: var(--primary);
+        }
+
+        .info-card {
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-title i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.25);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .selected-items {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        .selected-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .selected-item:last-child {
+            border-bottom: none;
+        }
+
+        .selected-item-name {
+            font-weight: 600;
+            color: var(--dark);
+            flex: 1;
+        }
+
+        .selected-item-price {
+            color: var(--primary);
+            font-weight: 600;
+            margin-left: 15px;
+        }
+
+        .selected-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--dark);
+            margin-top: 1rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .benefits-list {
+            margin-top: 2rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.2rem;
+        }
+
+        .benefit-icon {
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+            font-size: 1.2rem;
+        }
+
+        .benefit-content h5 {
+            margin-bottom: 0.3rem;
+            color: var(--primary);
+        }
+
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: #cbd5e0;
+            margin-right: 15px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .badge {
+            background: var(--success);
+            color: white;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, rgba(37, 99, 235, 0.1), rgba(16, 185, 129, 0.1));
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .highlight h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .grid-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .grid-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .grid-counter {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* 图片加载样式 */
+        .gift-img.loading {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        @media (max-width: 1200px) {
+            .gift-grid-container {
+                height: 580px;
+            }
+
+            .gift-card {
+                height: 300px;
+            }
+
+            .gift-img-container {
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .gift-grid-container {
+                height: 540px;
+            }
+
+            .gift-grid {
+                gap: 15px;
+            }
+
+            .gift-card {
+                height: 280px;
+            }
+
+            .gift-img-container {
+                height: 170px;
+            }
+
+            .gift-content {
+                padding: 12px;
+            }
+
+            .gift-title {
+                font-size: 0.95rem;
+                height: 36px;
+            }
+
+            .gift-price {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gift-grid-container {
+                height: 500px;
+            }
+
+            .gift-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+            }
+
+            .gift-card {
+                height: 250px;
+            }
+
+            .gift-img-container {
+                height: 150px;
+            }
+
+            .gift-content {
+                padding: 10px;
+            }
+
+            .gift-title {
+                font-size: 0.9rem;
+                height: 32px;
+            }
+
+            .gift-price {
+                font-size: 1.1rem;
+            }
+
+            .amount-value {
+                font-size: 2rem;
+            }
+
+            .scroll-btn {
+                width: 45px;
+                height: 35px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .gift-grid-container {
+                height: 460px;
+                padding: 0.8rem;
+            }
+
+            .gift-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+
+            .gift-card {
+                height: 220px;
+            }
+
+            .gift-img-container {
+                height: 130px;
+            }
+
+            .gift-content {
+                padding: 8px;
+            }
+
+            .gift-title {
+                font-size: 0.85rem;
+                height: 28px;
+            }
+
+            .gift-price {
+                font-size: 1rem;
+            }
+
+            .scroll-btn {
+                width: 40px;
+                height: 30px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <header class="header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-gift fa-2x me-3"></i>
+                    <div>
+                        <h1 class="h3 mb-0">2026年度员工福利领取</h1>
+                        <p class="mb-0 opacity-75">智慧企业福利平台 | 每人初始福利金额：¥1400.00</p>
+                    </div>
+                </div>
+                <div class="d-none d-md-block">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-user-circle fa-2x me-2" style="color: #f3f4f6;"></i>
+                        <div>
+                            <p class="mb-0 fw-bold">欢迎，张三</p>
+                            <p class="mb-0 opacity-75">员工编号：E2026001</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <!-- 礼品选择区域 -->
+            <div class="col-lg-8">
+                <div class="gift-grid-container">
+                    <div class="grid-header">
+                        <div class="grid-title"><i class="fas fa-gift me-2"></i> 福利礼品选择</div>
+                        <div class="grid-counter"><span id="current-page">1</span>/<span id="total-pages">2</span> 页</div>
+                    </div>
+
+                    <div class="gift-scroll-wrapper">
+                        <button class="scroll-btn scroll-btn-up" id="scroll-up">
+                            <i class="fas fa-chevron-up"></i>
+                        </button>
+
+                        <div class="gift-scroll-container" id="gift-scroll">
+                            <div class="gift-grid" id="gift-grid">
+                                <!-- 第1行 -->
+                                <div class="gift-card" data-price="65.90">
+                                    <div class="gift-img-container">
+                                        <img src="https://img10.360buyimg.com/pcpubliccms/s540x1440_jfs/t1/375698/26/16516/43857/69423e42Fe902e6ca/5aad717f2adb255d.jpg.avif" class="gift-img" alt="智能保温杯" loading="lazy">
+                                    </div>
+                                    <div class="gift-content">
+                                        <h4 class="gift-title">智能保温杯 304不锈钢 保温12小时</h4>
+                                        <p class="gift-price">¥65.90</p>
+                                        <p class="gift-stock">库存充足</p>
+                                    </div>
+                                </div>
+
+                                <div class="gift-card" data-price="399">
+                                    <div class="gift-img-container">
+                                        <img src="https://img10.360buyimg.com/pcpubliccms/s540x1440_jfs/t1/192581/40/18238/201353/611615c4Ebaa4f8f1/066c07c962336e15.jpg.avif" class="gift-img" alt="商务书包" loading="lazy">
+                                    </div>
+                                    <div class="gift-content">
+                                        <h4 class="gift-title">商务书包 防水多功能 大容量</h4>
+                                        <p class="gift-price">¥399</p>
+                                        <p class="gift-stock">库存充足</p>
+                                    </div>
+                                </div>
+
+                                <div class="gift-card" data-price="1350">
+                                    <div class="gift-img-container">
+                                        <img src="https://img10.360buyimg.com/pcpubliccms/s1440x1440_jfs/t1/354461/22/24/82001/68f9ba98Fe4e5f8f0/816a8dfe54294464.jpg.avif" class="gift-img" alt="智能手环" loading="lazy">
+                                    </div>
+                                    <div class="gift-content">
+                                        <h4 class="gift-title">人体工学椅 久坐舒适 家用护腰</h4>
+                                        <p class="gift-price">¥1350</p>
+                                        <p class="gift-stock">库存充足</p>
+                                    </div>
+                                </div>
+
+                                <!-- 第2行 -->
+                                <div class="gift-card" data-price="728">
+                                    <div class="gift-img-container">
+                                        <img src="https://img10.360buyimg.com/pcpubliccms/s540x1440_jfs/t1/347911/11/6988/24959/68d3ceb9F36d01bfe/6ba7679fba847500.jpg.avif" class="gift-img" alt="无线耳机" loading="lazy">
+                                    </div>
+                                    <div class="gift-content">
+                                        <h4 class="gift-title">真无线蓝牙耳机 降噪 超长续航</h4>
+                                        <p class="gift-price">¥728</p>
+                                        <p class="gift-stock">库存充足</p>
+                                    </div>
+                                </div>
+
+                                <div class="gift-card" data-price="599">
+                                    <div class="gift-img-container">
+                                        <img src="https://img10.360buyimg.com/pcpubliccms/s540x1440_jfs/t1/318789/12/13542/14903/68663399F8a5f956d/ff25eed5ead4a692.png.avif" class="gift-img" alt="电子阅读器" loading="lazy">
+                                    </div>
+                                    <div class="gift-content">
+                                        <h4 class="gift-title">电子阅读器 6英寸 护眼墨水屏</h4>
+                                        <p class="gift-price">¥599</p>
+                                        <p class="gift-stock">库存充足</p>
+                                    </div>
+                                </div>
+
+                                <div class="gift-card" data-price="296.19">
+                                    <div class="gift-img-container">
+                                        <img src="https://img10.360buyimg.com/pcpubliccms/s540x1440_jfs/t1/196555/1/43517/39571/6603ab64Fd6858792/7a4dffa03a71e497.jpg.avif" class="gift-img" alt="蓝牙音箱" loading="lazy">
+                                    </div>
+                                    <div class="gift-content">
+                                        <h4 class="gift-title">蓝牙音箱 便携式 立体声重低音</h4>
+                                        <p class="gift-price">¥296.19</p>
+                                        <p class="gift-stock">库存充足</p>
+                                    </div>
+                                </div>
+
+                                <!-- 第3行 -->
+                                <div class="gift-card" data-price="233.99">
+                                    <div class="gift-img-container">
+                                        <img src="https://img10.360buyimg.com/pcpubliccms/s540x1440_jfs/t1/327025/17/4898/25125/689efdeeF424cbcb4/fd8ba4a4c0041d04.jpg.avif" class="gift-img" alt="电动牙刷" loading="lazy">
+                                    </div>
+                                    <div class="gift-content">
+                                        <h4 class="gift-title">电动牙刷 声波震动 多模式</h4>
+                                        <p class="gift-price">¥299.99</p>
+                                        <p class="gift-stock">库存充足</p>
+                                    </div>
+                                </div>
+
+                                <div class="gift-card" data-price="229">
+                                    <div class="gift-img-container">
+                                        <img src="https://img10.360buyimg.com/pcpubliccms/s540x1440_jfs/t1/281904/6/18621/79115/67fb3180F9bab41f1/0268bc37e1246290.jpg.avif" class="gift-img" alt="空气炸锅" loading="lazy">
+                                    </div>
+                                    <div class="gift-content">
+                                        <h4 class="gift-title">空气炸锅 大容量 智能触控</h4>
+                                        <p class="gift-price">¥229</p>
+                                        <p class="gift-stock">库存充足</p>
+                                    </div>
+                                </div>
+
+                                <div class="gift-card" data-price="59">
+                                    <div class="gift-img-container">
+                                        <img src="https://img10.360buyimg.com/pcpubliccms/s1440x1440_jfs/t1/326202/15/11241/74650/68ad8e0bF12d5842a/d98bae70ef7db95d.jpg.avif" class="gift-img" alt="电热水壶" loading="lazy">
+                                    </div>
+                                    <div class="gift-content">
+                                        <h4 class="gift-title">电热水壶 304不锈钢 1.7L</h4>
+                                        <p class="gift-price">¥59</p>
+                                        <p class="gift-stock">库存充足</p>
+                                    </div>
+                                </div>
+
+                                <!-- 第4行 (第二页) -->
+                                <div class="gift-card" data-price="206">
+                                    <div class="gift-img-container">
+                                        <img src="https://img10.360buyimg.com/pcpubliccms/s1440x1440_jfs/t1/242881/25/13958/45250/6687baa4Faf744978/ca004a71626d8904.jpg.avif" class="gift-img" alt="真皮腰带" loading="lazy">
+                                    </div>
+                                    <div class="gift-content">
+                                        <h4 class="gift-title">真皮腰带 男士自动扣 商务款</h4>
+                                        <p class="gift-price">¥206</p>
+                                        <p class="gift-stock">库存充足</p>
+                                    </div>
+                                </div>
+
+                                <div class="gift-card" data-price="439">
+                                    <div class="gift-img-container">
+                                        <img src="https://img10.360buyimg.com/pcpubliccms/s1440x1440_jfs/t1/245833/12/25359/51119/6746dae8F2066a373/54631cfbc0d7948e.jpg.avif" class="gift-img" alt="智能手表" loading="lazy">
+                                    </div>
+                                    <div class="gift-content">
+                                        <h4 class="gift-title">智能手表 运动健康监测 GPS</h4>
+                                        <p class="gift-price">¥439</p>
+                                        <p class="gift-stock">库存充足</p>
+                                    </div>
+                                </div>
+
+                                <div class="gift-card" data-price="59.90">
+                                    <div class="gift-img-container">
+                                        <img src="https://img10.360buyimg.com/pcpubliccms/s1440x1440_jfs/t1/289601/31/5257/65875/6821a998F8a8b2671/62da155c7bf91a34.jpg.avif" class="gift-img" alt="瑜伽垫" loading="lazy">
+                                    </div>
+                                    <div class="gift-content">
+                                        <h4 class="gift-title">瑜伽垫 加厚防滑 TPE材质</h4>
+                                        <p class="gift-price">¥59.90</p>
+                                        <p class="gift-stock">库存充足</p>
+                                    </div>
+                                </div>
+
+                                <!-- 第5行 (第二页) -->
+                                <div class="gift-card" data-price="149">
+                                    <div class="gift-img-container">
+                                        <img src="https://img10.360buyimg.com/pcpubliccms/s1440x1440_jfs/t1/257227/2/13243/107329/6789ad2eFa4c5fd50/46a6e8bf706b8958.jpg.avif" class="gift-img" alt="机械键盘" loading="lazy">
+                                    </div>
+                                    <div class="gift-content">
+                                        <h4 class="gift-title">机械键盘 青轴 RGB背光</h4>
+                                        <p class="gift-price">¥149</p>
+                                        <p class="gift-stock">库存充足</p>
+                                    </div>
+                                </div>
+
+                                <div class="gift-card" data-price="219">
+                                    <div class="gift-img-container">
+                                        <img src="https://img10.360buyimg.com/pcpubliccms/s1440x1440_jfs/t1/217954/22/39790/81357/663c92e3F754012c0/b0936b2f3a716a21.jpg.avif" class="gift-img" alt="智能音箱" loading="lazy">
+                                    </div>
+                                    <div class="gift-content">
+                                        <h4 class="gift-title">海澜之家棉被子 8斤冬季被子被芯</h4>
+                                        <p class="gift-price">¥219</p>
+                                        <p class="gift-stock">库存充足</p>
+                                    </div>
+                                </div>
+
+                                <div class="gift-card" data-price="1299">
+                                    <div class="gift-img-container">
+                                        <img src="https://img10.360buyimg.com/pcpubliccms/s1440x1440_jfs/t1/315337/39/3520/113270/683153efF20797976/e68d45bf167f96a1.jpg.avif" class="gift-img" alt="轻奢旅行箱" loading="lazy">
+                                    </div>
+                                    <div class="gift-content">
+                                        <h4 class="gift-title">轻奢旅行箱 万向轮 拉杆箱 20寸</h4>
+                                        <p class="gift-price">¥1299</p>
+                                        <p class="gift-stock">库存充足</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="scroll-btn scroll-btn-down" id="scroll-down">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="highlight mt-4">
+                    <h3><i class="fas fa-lightbulb me-2"></i> 福利小贴士</h3>
+                    <p>您可以选择多种礼品，但总金额不得超过¥1400.00。系统将自动计算总金额，超出限额将无法选择。</p>
+                    <div class="d-flex align-items-center mt-3">
+                        <div class="badge" id="selected-badge">已选礼品：0件，总金额：¥0.00</div>
+                        <div class="ms-3 text-muted">
+                            <small><i class="fas fa-arrows-up-down me-1"></i> 使用上下箭头或滚动鼠标查看更多礼品</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="selected-items">
+                    <h4 class="mb-3"><i class="fas fa-shopping-cart me-2"></i> 已选礼品</h4>
+                    <div id="selected-items-list">
+                        <!-- 已选礼品将动态添加到这里 -->
+                    </div>
+                    <div class="selected-total">
+                        <span>总金额：</span>
+                        <span id="selected-total-price">¥0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 信息填写区域 -->
+            <div class="col-lg-4">
+                <div class="info-card">
+                    <h2 class="info-title"><i class="fas fa-id-card-alt"></i> 福利领取信息</h2>
+
+                    <div class="amount-display">
+                        <div class="amount-title">当前福利余额</div>
+                        <div class="amount-value" id="current-amount">¥1400.00</div>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span id="used-amount">已使用: ¥0.00</span>
+                                <span id="remaining-amount">剩余: ¥1400.00</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="gift-form">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">姓名 <span class="text-danger">*</span></label>
+                            <input name="name" type="text" class="form-control" id="name" placeholder="请输入您的姓名" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">联系电话 <span class="text-danger">*</span></label>
+                            <input name="phone" type="tel" class="form-control" id="phone" placeholder="请输入11位手机号码" pattern="[0-9]{11}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="address" class="form-label">收货地址 <span class="text-danger">*</span></label>
+                            <input name="address" type="text" class="form-control" id="address" placeholder="请填写详细收货地址" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="department" class="form-label">所在部门 <span class="text-danger">*</span></label>
+                            <input name="department" type="text" class="form-control" id="department" placeholder="请填写您的所属部门" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">备注信息</label>
+                            <textarea class="form-control" rows="3" placeholder="可填写特殊要求或备注"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn submit-btn w-100" onclick="login()">
+                            <i class="fas fa-check-circle me-2"></i> 确认领取（扣除¥0）
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="text-center">
+                <div class="footer-logo">
+                    <i class="fas fa-gift me-2"></i> 智慧企业福利平台
+                </div>
+                <p class="mb-3">2026年度员工福利计划 | 企业内部专属平台 | 保障员工权益</p>
+                <div class="footer-links">
+                    <a href="#">福利政策</a>
+                    <a href="#">常见问题</a>
+                    <a href="#">联系客服</a>
+                    <a href="#">隐私政策</a>
+                </div>
+                <p class="mt-3 opacity-75">&copy; 2026 智慧企业. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化变量
+            const initialAmount = 1400;
+            let currentAmount = initialAmount;
+            const amountDisplay = document.getElementById('current-amount');
+            const progress = document.querySelector('.progress-bar');
+            const usedAmountDisplay = document.getElementById('used-amount');
+            const remainingAmountDisplay = document.getElementById('remaining-amount');
+            const submitBtn = document.querySelector('.submit-btn');
+            const selectedBadge = document.getElementById('selected-badge');
+            const selectedItemsList = document.getElementById('selected-items-list');
+            const selectedTotalPrice = document.getElementById('selected-total-price');
+            const scrollContainer = document.getElementById('gift-scroll');
+            const scrollUpBtn = document.getElementById('scroll-up');
+            const scrollDownBtn = document.getElementById('scroll-down');
+            const currentPageDisplay = document.getElementById('current-page');
+            const totalPagesDisplay = document.getElementById('total-pages');
+
+            // 已选商品列表
+            let selectedItems = [];
+
+            // 图片加载处理
+            function handleImageLoad() {
+                const images = document.querySelectorAll('.gift-img');
+                images.forEach(img => {
+                    // 添加加载状态
+                    if (!img.complete) {
+                        img.classList.add('loading');
+                    }
+
+                    // 图片加载完成
+                    img.addEventListener('load', function() {
+                        this.classList.remove('loading');
+                    });
+
+                    // 图片加载失败
+                    img.addEventListener('error', function() {
+                        this.classList.remove('loading');
+                        // 设置备用图片
+                        this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjBmMGYwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIE5vdCBBdmFpbGFibGU8L3RleHQ+PC9zdmc+';
+                    });
+                });
+            }
+
+            // 礼品选择交互
+            const giftCards = document.querySelectorAll('.gift-card');
+            giftCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const price = parseInt(this.getAttribute('data-price'));
+                    const itemName = this.querySelector('.gift-title').textContent;
+
+                    // 检查是否已选中
+                    const isAlreadySelected = this.classList.contains('selected');
+
+                    if (isAlreadySelected) {
+                        // 取消选中
+                        this.classList.remove('selected');
+                        selectedItems = selectedItems.filter(item => item.price !== price);
+                    } else {
+                        // 检查总金额是否超过限额
+                        const currentTotal = selectedItems.reduce((sum, item) => sum + item.price, 0);
+                        const newTotal = currentTotal + price;
+
+                        if (newTotal > initialAmount) {
+                            alert(`礼品总金额不能超过¥${initialAmount}.00，请重新选择`);
+                            return;
+                        }
+
+                        // 选中商品
+                        this.classList.add('selected');
+                        selectedItems.push({ name: itemName, price: price });
+                    }
+
+                    // 更新UI
+                    updateUI();
+                });
+            });
+
+            // 垂直滚动功能
+            function setupVerticalScroll() {
+                const scrollAmount = 200; // 每次滚动的像素数
+
+                // 向下滚动
+                scrollDownBtn.addEventListener('click', function() {
+                    scrollContainer.scrollBy({
+                        top: scrollAmount,
+                        behavior: 'smooth'
+                    });
+                });
+
+                // 向上滚动
+                scrollUpBtn.addEventListener('click', function() {
+                    scrollContainer.scrollBy({
+                        top: -scrollAmount,
+                        behavior: 'smooth'
+                    });
+                });
+
+                // 根据滚动位置显示/隐藏箭头按钮
+                function updateScrollButtons() {
+                    const scrollTopValue = scrollContainer.scrollTop;
+                    const maxScroll = scrollContainer.scrollHeight - scrollContainer.clientHeight;
+
+                    // 显示/隐藏上箭头
+                    if (scrollTopValue > 0) {
+                        scrollUpBtn.style.opacity = '1';
+                        scrollUpBtn.style.pointerEvents = 'auto';
+                    } else {
+                        scrollUpBtn.style.opacity = '0.5';
+                        scrollUpBtn.style.pointerEvents = 'none';
+                    }
+
+                    // 显示/隐藏下箭头
+                    if (scrollTopValue < maxScroll - 10) {
+                        scrollDownBtn.style.opacity = '1';
+                        scrollDownBtn.style.pointerEvents = 'auto';
+                    } else {
+                        scrollDownBtn.style.opacity = '0.5';
+                        scrollDownBtn.style.pointerEvents = 'none';
+                    }
+
+                    // 更新页面计数器
+                    updatePageCounter();
+                }
+
+                // 更新页面计数器
+                function updatePageCounter() {
+                    const scrollTopValue = scrollContainer.scrollTop;
+                    const containerHeight = scrollContainer.clientHeight;
+                    const totalCards = giftCards.length;
+                    const cardsPerPage = 9; // 3x3网格
+
+                    // 计算当前页面
+                    const currentPage = Math.floor(scrollTopValue / containerHeight) + 1;
+                    const totalPages = Math.ceil(totalCards / cardsPerPage);
+
+                    currentPageDisplay.textContent = currentPage;
+                    totalPagesDisplay.textContent = totalPages;
+                }
+
+                scrollContainer.addEventListener('scroll', updateScrollButtons);
+                // 初始化按钮状态
+                updateScrollButtons();
+            }
+
+            // 更新UI函数
+            function updateUI() {
+                // 计算总金额
+                const total = selectedItems.reduce((sum, item) => sum + item.price, 0);
+                currentAmount = initialAmount - total;
+
+                // 更新已选商品列表
+                updateSelectedItemsList();
+
+                // 更新余额和进度条
+                amountDisplay.textContent = `¥${currentAmount}.00`;
+                usedAmountDisplay.textContent = `已使用: ¥${total}.00`;
+                remainingAmountDisplay.textContent = `剩余: ¥${currentAmount}.00`;
+
+                // 更新进度条
+                const progressPercent = (total / initialAmount) * 100;
+                progress.style.width = `${progressPercent}%`;
+                progress.setAttribute('aria-valuenow', progressPercent);
+
+                // 更新已选礼品显示
+                selectedBadge.textContent = `已选礼品：${selectedItems.length}件，总金额：¥${total}.00`;
+
+                // 更新提交按钮
+                submitBtn.innerHTML = `<i class="fas fa-check-circle me-2"></i> 确认领取（扣除¥${total}）`;
+
+                // 更新总金额显示
+                selectedTotalPrice.textContent = `¥${total}.00`;
+            }
+
+            // 更新已选商品列表
+            function updateSelectedItemsList() {
+                selectedItemsList.innerHTML = '';
+
+                if (selectedItems.length === 0) {
+                    selectedItemsList.innerHTML = '<p class="text-center text-muted">暂未选择礼品</p>';
+                    return;
+                }
+
+                selectedItems.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'selected-item';
+                    itemElement.innerHTML = `
+                        <span class="selected-item-name">${item.name}</span>
+                        <span class="selected-item-price">¥${item.price}</span>
+                    `;
+                    selectedItemsList.appendChild(itemElement);
+                });
+            }
+
+            // 表单提交验证
+            const form = document.getElementById('gift-form');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // 检查是否选择了礼品
+                if (selectedItems.length === 0) {
+                    alert('请先选择至少一种福利礼品！');
+                    return;
+                }
+
+                // 验证必填项
+                const name = document.getElementById('name').value;
+                const phone = document.getElementById('phone').value;
+                const address = document.getElementById('address').value;
+                const department = document.getElementById('department').value;
+
+                if (!name || !phone || !address || !department) {
+                    alert('请填写所有必填信息！');
+                    return;
+                }
+
+                // 验证手机号格式
+                if (!/^\d{11}$/.test(phone)) {
+                    alert('请输入有效的11位手机号码！');
+                    return;
+                }
+
+                // 模拟提交成功
+                alert(`福利领取成功！\n已扣除礼品金额：¥${selectedItems.reduce((sum, item) => sum + item.price, 0)}\n剩余金额：¥${currentAmount}\n信息已提交至系统`);
+
+                // 重置表单和选择
+                form.reset();
+                selectedItems = [];
+                giftCards.forEach(c => c.classList.remove('selected'));
+                updateUI();
+            });
+
+            // 初始化垂直滚动功能
+            setupVerticalScroll();
+
+            // 初始化图片加载处理
+            handleImageLoad();
+
+            // 初始化UI
+            updateUI();
+        });
+    </script>
+</body>
+</html>
