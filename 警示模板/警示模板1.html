@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网络安全钓鱼演习提示</title>
+    <style type="text/css">
+        :root {
+            --primary-color: #e74c3c;
+            --secondary-color: #3498db;
+            --dark-color: #2c3e50;
+            --light-color: #f4f7f9;
+            --status-color: #f8d7da; /* 浅红色背景 */
+            --status-text-color: #721c24; /* 深红色文字 */
+            --warning-color: #f39c12;
+            --text-color: #34495e;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #f4f7f9 0%, #e8edf1 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+        
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border-top: 8px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+        
+        .icon {
+            font-size: 80px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        h1 {
+            color: var(--dark-color);
+            font-size: 28px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            color: var(--text-color);
+            font-size: 18px;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            background-color: var(--status-color); /* 使用浅红色背景 */
+            color: var(--status-text-color); /* 使用深红色文字 */
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(120, 20, 20, 0.1);
+            border: 1px solid #f5c6cb;
+        }
+        
+        .content {
+            text-align: left;
+            color: var(--text-color);
+        }
+        
+        .intro {
+            margin-bottom: 30px;
+            font-size: 16px;
+            text-align: center;
+            padding: 0 10px;
+        }
+        
+        .risk-points, .advice {
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        .risk-points:hover, .advice:hover {
+            transform: translateY(-5px);
+        }
+        
+        .risk-points {
+            background: linear-gradient(135deg, #fff5f5 0%, #ffeaea 100%);
+            border-left: 6px solid var(--primary-color);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.1);
+        }
+        
+        .advice {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f4ff 100%);
+            border-left: 6px solid var(--secondary-color);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
+        }
+        
+        .risk-points h3, .advice h3 {
+            margin-top: 0;
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .risk-points h3 {
+            color: #c0392b;
+        }
+        
+        .advice h3 {
+            color: #2980b9;
+        }
+        
+        .risk-points h3::before, .advice h3::before {
+            content: "";
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            background-size: contain;
+        }
+        
+        .risk-points h3::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23c0392b"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>');
+        }
+        
+        .advice h3::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%232980b9"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>');
+        }
+        
+        ul {
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 10px;
+        }
+        
+        .risk-points li::marker {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .advice li::marker {
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #95a5a6;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+            text-align: center;
+        }
+        
+        .highlight {
+            background-color: rgba(231, 76, 60, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .security-tip {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid var(--warning-color);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .security-tip::before {
+            content: "💡";
+            font-size: 20px;
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .subtitle {
+                font-size: 16px;
+            }
+            
+            .risk-points, .advice {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">⚠️</div>
+        
+        <h1>这是一次网络安全钓鱼演习！</h1>
+        
+        <p class="subtitle">您的警惕性是保护公司信息安全的第一道防线</p>
+        
+        <div class="status-badge">您的个人信息是安全的</div>
+        
+        <div class="content">
+            <p class="intro">您刚才点击的关于<span class="highlight">"OA系统升级"</span>的紧急链接是一个<strong>模拟钓鱼攻击</strong>。本次活动由公司信息安全部发起，旨在提升全员的防范意识。</p>
+            
+            <div class="security-tip">
+                钓鱼攻击是黑客最常用的攻击手段之一，通过伪装成可信来源诱导您点击恶意链接或提供敏感信息。
+            </div>
+            
+            <div class="risk-points">
+                <h3>本次场景中的风险点：</h3>
+                
+                <ul>
+                    <li><strong>紧迫感诱导：</strong>邮件或消息中使用了"紧急升级"、"立即操作"等词汇，施加心理压力。</li>
+                    <li><strong>未知来源链接：</strong>链接地址并非公司官方域名（如：oa-update.xyz 而非 company.com）。</li>
+                    <li><strong>非官方渠道：</strong>通过非正式邮件或社交软件发送的系统变更通知。</li>
+                    <li><strong>伪造登录页面：</strong>攻击者可能搭建与正规网站一致的虚假登录页面，诱导您输入账号密码。</li>
+                </ul>
+            </div>
+            
+            <div class="advice">
+                <h3>安全防范建议：</h3>
+                
+                <ul>
+                    <li><strong>核实发件人：</strong>仔细检查发件人邮箱后缀，防范相似域名的伪装。</li>
+                    <li><strong>悬停检查链接：</strong>在点击前将鼠标悬停在链接上，查看浏览器左下角显示的实际跳转地址。</li>
+                    <li><strong>多渠道确认：</strong>对于涉及账号密码、系统升级的通知，请通过公司官方办公系统或直接联系IT部门确认。</li>
+                    <li><strong>保持密码安全：</strong>使用强密码并定期更换，不在多个网站使用相同密码。</li>
+                    <li><strong>安装安全软件：</strong>确保设备安装杀毒软件并定期更新，开启对邮件附件的扫描功能。</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>💻 网络安全无小事，守护数字生活从提高安全意识开始！</p>
+            <p>&copy; 2026 肥羊羊村医院信息安全部 | 安全意识 守护你我</p>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // 添加一些简单的交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const riskItems = document.querySelectorAll('.risk-points li');
+            const adviceItems = document.querySelectorAll('.advice li');
+            
+            // 为列表项添加动画效果
+            riskItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-20px)';
+                setTimeout(() => {
+                    item.style.transition = 'all 0.5s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, 300 + (index * 100));
+            });
+            
+            adviceItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(20px)';
+                setTimeout(() => {
+                    item.style.transition = 'all 0.5s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, 600 + (index * 100));
+            });
+            
+            // 添加点击安全提示的效果
+            const securityTip = document.querySelector('.security-tip');
+            if(securityTip) {
+                securityTip.addEventListener('click', function() {
+                    this.style.transform = 'scale(1.02)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 200);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
